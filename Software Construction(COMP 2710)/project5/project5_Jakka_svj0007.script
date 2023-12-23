@@ -1,0 +1,29 @@
+Script started on Tue 15 Nov 2022 03:09:47 PM CST
+[?1034hbash-4.2$ logoutrm project5_Jakka_svj0007.cpp [C[C[C[C[C[C[C[C[C[Cls[Kogouts[Krm project5_Jakka_svj0007.cpp[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kproject5_Jakka_svj0007
+bash: project5_Jakka_svj0007: command not found
+bash-4.2$ ./prohect[K[K[K[Kject5_Jakka_svj0007
+Banner id: 904157380
+producer produce item 7
+consumer consume item 7
+producer produce item 14
+consumer consume item 14
+producer produce item 21
+consumer consume item 21
+producer produce item 28
+consumer consume item 28
+producer produce item 35
+consumer consume item 35
+producer produce item 42
+consumer consume item 42
+producer produce item 49
+consumer consume item 49
+producer produce item 56
+consumer consume item 56
+producer produce item 63
+consumer consume item 63
+producer produce item 70
+consumer consume item 70
+bash-4.2$ exit
+exit
+
+Script done on Tue 15 Nov 2022 03:10:53 PM CST
