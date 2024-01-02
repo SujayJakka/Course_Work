@@ -1,0 +1,32 @@
+Thread Questions
+1. A thread exits when it calls thread_exit(). Parts of the thread structure that we do not need to run right away is cleaned up. The rest of the thread gets cleaned up when thread_destroy gets called from
+   exorcise(). When a thread sleeps it will allow another process to use the CPU. The current thread's t_sleepaddr field will be set to an address. It can only be runnable again by calls to thread_wakeup with
+   the same value of the address set in the thread's t_sleepaddr field.
+
+2. The functions that handle a context switch are mi_switch and md_switch. Mi_switch which is high level machine-independent context switch code. Md_switch is the machine-dependent code that mi_switch calls
+   that actually does the context switch.
+
+3. There are 4 thread states which are S_RUN, S_READY, S_SLEEP, and S_ZOMB.
+
+4. When you turn interrupts off that means that the CPU will not context switch out of the current process. This is accomplished by executing splhigh() which sets priority level to high essentially disabling
+   all interrupts. It is important to turn off interrupts in the thread subsystem code because it is essential for some processes to complete before other processes are executed.
+
+5. When a thread wakes up another thread it removes the thread that is sleeping because of a specified reason such as lock or cv. The thread gets removed from the sleepers array and the sleeping thread that
+   is now woken up can run again through context switch.
+
+
+Scheduler Questions
+6. The function that is responsible for choosing the next thread to run is the function scheduler(void) that returns the next thread to run.
+
+7. The function picks the next thread by checking if the run queue is not empty. If it is empty the CPU is idle. If its not empty, the function will return the head of the run queue.
+
+8. The role the hardware timer plays in scheduling is that it allows for the measurement of time intervals and also it allows for fair allocation of the CPU. The hardware independent function that is called
+   on timer interrupt is hardclock.
+
+
+Synchronization Questions
+9. Thread_sleep() causes a process to sleep and the address passed is the reason why that thread is sleeping. Thread_wakeup() wakes up all the threads that are sleeping because of that reason(ADDR). Thread_sl 
+   eep() and Thread_wakeup() are essential for the implementation of semaphores because they allow for passive waiting.
+
+10. The lock API in OS/161 provides lock_do_i_hold() but not lock_get_holder() to allow the prevention of deadlock situations, and it increases lock security as the thread themselves can only acquire or release
+    a lock.   
