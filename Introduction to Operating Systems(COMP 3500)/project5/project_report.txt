@@ -1,0 +1,269 @@
+
+7.1
+
+(1) I separated scheduling mechanisms from policies by making sure that each policy had it's own function. This allows there to be variables and data structures
+    that are local to the policies. If I need to change or modify a policy, it will not alter the other policies.
+
+(2) I implemented the three scheduling algorithms by first creating a separate function for the first algorithm I implemented which was FCFS. This algorithm took the
+    longest time but it gave me a blue-print on what to do for the other functions such as having a time, finished_processes, and ready_queue count variables. It also showed
+    me what exactly I need to do for each iteration of my main loop of the process. After I had FCFS implemented, I implemented the SRTF policy. The main difference was 
+    making sure to go through my ready queue to select the process with the minimum amount of time remaining. Lastly I implemented RR, which required more changes such as 
+    keeping track of how much time there is left for a switch.
+
+(3) I calculate the waiting times by having an overall_waiting_time variable and for each time unit I would increment that variable by the amount of processes
+    that are in the ready_queue not including the process chosen to run for that time unit. I then take the average of this overall waiting time to find the average
+    waiting time.
+
+(4) I calculate the response times by having an overall_response_time variable and for each time unit I would increment that variable by the amount of processes
+    that are in the ready_queue that have not responded yet. I then take the average of this overall response time to find the average response time.
+
+(5) I calculate the turnaround time by having an overall_turnaround_time variable and after each process is finished I will find the turnaround time by subtracting 
+    its arrival time from its finish time. I will then increment this difference to the overall turnaround time. I then take the average of this overall turnaround time to 
+    find the average turnaround time.
+
+(6) I implemented the command line parsor by making sure the number of arguments passed were either 3 or 4 and making sure the inputs were correct(Usage: scheduler tas
+    k_list_file [FCFS|RR|SRTF] [time_quantum]). If not I print an error message and return EXIT_FAILURE.
+
+7.2
+
+(1) I believe my solution is pretty general as the processes in the input file can be sorted in any order and my scheduler will execute correctly.
+
+(2) It would be very easy to add a new sheduling policy to my schedular. My implementation is very modular, so all you have to do is add a new independent function for that
+    policy and add a conditional statement in the main function that can call the function of the new policy.
+
+(3) My program does offer input error checking. It makes sure the correct number of inputs were entered and if a valid scheduling policy was entered as input. It also checks
+    if the quantum input was provided if the RR policy was entered.
+
+7.3 
+
+(1) Yes my code is elegant and readable. I provided comments lines for all the major blocks of code.
+
+(2) I believe my solution is pretty innovative as I did not keep track of indvidual response, turnaround, and wait times for each process. I had variables that kept track
+    of the overall reponse, turnaround, and wait times and just incremented those at each time unit. I then just took the average of these variables to find the different 
+    averages.
+
+(3) I did not use any outside sources for this project. The only source code that is not mine is from the sample source code provided. The sample source code I used are
+    the read.c, open.c, print.c, and scheduler.c files. I also used their corresponding header files as well.
+
+
+
+--Input--
+
+./scheduler task.list FCFS
+
+
+--Output--
+
+Open file: task.list
+There are 6 tasks loaded...
+Task PID: 1, Arrival Time: 0, Burst Time: 10
+Task PID: 2, Arrival Time: 0, Burst Time: 9
+Task PID: 3, Arrival Time: 3, Burst Time: 5
+Task PID: 4, Arrival Time: 7, Burst Time: 4
+Task PID: 5, Arrival Time: 10, Burst Time: 6
+Task PID: 6, Arrival Time: 10, Burst Time: 7
+Press any key to continue ...
+
+==================================================================
+<time 0> process 1 is running
+<time 1> process 1 is running
+<time 2> process 1 is running
+<time 3> process 1 is running
+<time 4> process 1 is running
+<time 5> process 1 is running
+<time 6> process 1 is running
+<time 7> process 1 is running
+<time 8> process 1 is running
+<time 9> process 1 is running
+<time 10> process 1 is finished...
+<time 10> process 2 is running
+<time 11> process 2 is running
+<time 12> process 2 is running
+<time 13> process 2 is running
+<time 14> process 2 is running
+<time 15> process 2 is running
+<time 16> process 2 is running
+<time 17> process 2 is running
+<time 18> process 2 is running
+<time 19> process 2 is finished...
+<time 19> process 3 is running
+<time 20> process 3 is running
+<time 21> process 3 is running
+<time 22> process 3 is running
+<time 23> process 3 is running
+<time 24> process 3 is finished...
+<time 24> process 4 is running
+<time 25> process 4 is running
+<time 26> process 4 is running
+<time 27> process 4 is running
+<time 28> process 4 is finished...
+<time 28> process 5 is running
+<time 29> process 5 is running
+<time 30> process 5 is running
+<time 31> process 5 is running
+<time 32> process 5 is running
+<time 33> process 5 is running
+<time 34> process 5 is finished...
+<time 34> process 6 is running
+<time 35> process 6 is running
+<time 36> process 6 is running
+<time 37> process 6 is running
+<time 38> process 6 is running
+<time 39> process 6 is running
+<time 40> process 6 is running
+<time 41> process 6 is finished...
+<time 41> All processes finished ......
+==================================================================
+Average waiting time: 14.17
+Average response time: 14.17
+Average turnaround time: 21.00
+Overall CPU usage: 100.00%
+==================================================================
+
+
+--Input--
+
+./scheduler task.list SRTF
+
+
+--Output--
+
+Open file: task.list
+There are 6 tasks loaded...
+Task PID: 1, Arrival Time: 0, Burst Time: 10
+Task PID: 2, Arrival Time: 0, Burst Time: 9
+Task PID: 3, Arrival Time: 3, Burst Time: 5
+Task PID: 4, Arrival Time: 7, Burst Time: 4
+Task PID: 5, Arrival Time: 10, Burst Time: 6
+Task PID: 6, Arrival Time: 10, Burst Time: 7
+Press any key to continue ...
+
+==================================================================
+<time 0> process 2 is running
+<time 1> process 2 is running
+<time 2> process 2 is running
+<time 3> process 3 is running
+<time 4> process 3 is running
+<time 5> process 3 is running
+<time 6> process 3 is running
+<time 7> process 3 is running
+<time 8> process 3 is finished...
+<time 8> process 4 is running
+<time 9> process 4 is running
+<time 10> process 4 is running
+<time 11> process 4 is running
+<time 12> process 4 is finished...
+<time 12> process 2 is running
+<time 13> process 2 is running
+<time 14> process 2 is running
+<time 15> process 2 is running
+<time 16> process 2 is running
+<time 17> process 2 is running
+<time 18> process 2 is finished...
+<time 18> process 5 is running
+<time 19> process 5 is running
+<time 20> process 5 is running
+<time 21> process 5 is running
+<time 22> process 5 is running
+<time 23> process 5 is running
+<time 24> process 5 is finished...
+<time 24> process 6 is running
+<time 25> process 6 is running
+<time 26> process 6 is running
+<time 27> process 6 is running
+<time 28> process 6 is running
+<time 29> process 6 is running
+<time 30> process 6 is running
+<time 31> process 6 is finished...
+<time 31> process 1 is running
+<time 32> process 1 is running
+<time 33> process 1 is running
+<time 34> process 1 is running
+<time 35> process 1 is running
+<time 36> process 1 is running
+<time 37> process 1 is running
+<time 38> process 1 is running
+<time 39> process 1 is running
+<time 40> process 1 is running
+<time 41> process 1 is finished...
+<time 41> All processes finished ......
+==================================================================
+Average waiting time: 10.50
+Average response time: 9.00
+Average turnaround time: 17.33
+Overall CPU usage: 100.00%
+==================================================================
+
+
+--Input--
+
+./scheduler task.list RR 4
+
+
+--Output--
+
+Open file: task.list
+There are 6 tasks loaded...
+Task PID: 1, Arrival Time: 0, Burst Time: 10
+Task PID: 2, Arrival Time: 0, Burst Time: 9
+Task PID: 3, Arrival Time: 3, Burst Time: 5
+Task PID: 4, Arrival Time: 7, Burst Time: 4
+Task PID: 5, Arrival Time: 10, Burst Time: 6
+Task PID: 6, Arrival Time: 10, Burst Time: 7
+Press any key to continue ...
+
+==================================================================
+<time 0> process 1 is running
+<time 1> process 1 is running
+<time 2> process 1 is running
+<time 3> process 1 is running
+<time 4> process 2 is running
+<time 5> process 2 is running
+<time 6> process 2 is running
+<time 7> process 2 is running
+<time 8> process 3 is running
+<time 9> process 3 is running
+<time 10> process 3 is running
+<time 11> process 3 is running
+<time 12> process 1 is running
+<time 13> process 1 is running
+<time 14> process 1 is running
+<time 15> process 1 is running
+<time 16> process 4 is running
+<time 17> process 4 is running
+<time 18> process 4 is running
+<time 19> process 4 is running
+<time 20> process 4 is finished...
+<time 20> process 2 is running
+<time 21> process 2 is running
+<time 22> process 2 is running
+<time 23> process 2 is running
+<time 24> process 5 is running
+<time 25> process 5 is running
+<time 26> process 5 is running
+<time 27> process 5 is running
+<time 28> process 6 is running
+<time 29> process 6 is running
+<time 30> process 6 is running
+<time 31> process 6 is running
+<time 32> process 3 is running
+<time 33> process 3 is finished...
+<time 33> process 1 is running
+<time 34> process 1 is running
+<time 35> process 1 is finished...
+<time 35> process 2 is running
+<time 36> process 2 is finished...
+<time 36> process 5 is running
+<time 37> process 5 is running
+<time 38> process 5 is finished...
+<time 38> process 6 is running
+<time 39> process 6 is running
+<time 40> process 6 is running
+<time 41> process 6 is finished...
+<time 41> All processes finished ......
+==================================================================
+Average waiting time: 22.00
+Average response time: 8.33
+Average turnaround time: 28.83
+Overall CPU usage: 100.00%
+==================================================================
