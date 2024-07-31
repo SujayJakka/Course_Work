@@ -1,0 +1,527 @@
+diff --git a/kern/asst1/catsem.c b/kern/asst1/catsem.c
+index dcb257b..d126353 100644
+--- a/kern/asst1/catsem.c
++++ b/kern/asst1/catsem.c
+@@ -18,7 +18,7 @@
+ #include <lib.h>
+ #include <test.h>
+ #include <thread.h>
+-
++#include <synch.h>
+ 
+ /*
+  * 
+@@ -45,6 +45,36 @@
+ #define NMICE 2
+ 
+ 
++// Creation of Cat and Mouse names
++const char* const mouse_names[NMICE] = {"Nathan", "Dwight"};
++const char* const cat_names[NCATS] = {"Sujay", "June", "Amaan", "Colin", "Stephen", "Omar"};
++
++// Creation of bool type using enum
++typedef enum {false, true} bool;
++
++// Declaration of global variable all_dishes_available
++volatile bool all_dishes_available = true;
++
++// Declaration of global mutexes
++static struct semaphore *done;
++static struct semaphore *all_done;
++static struct semaphore *mutex;
++static struct semaphore *dish_mutex;
++
++// Declaration of global cat variables
++static struct semaphore *cats_queue;
++volatile int cats_wait_count = 0;
++volatile bool no_cat_eat = true;
++
++// Declaration of global mice variables
++static struct semaphore *mice_queue;
++volatile int mice_wait_count = 0;
++volatile bool no_mouse_eat = true;
++
++// Declaration of global variables for dishes
++volatile bool dish1_busy = false;
++volatile bool dish2_busy = false;
++
+ /*
+  * 
+  * Function Definitions
+@@ -52,6 +82,62 @@
+  */
+ 
+ 
++
++/*	
++ * setup()
++ *
++ * Arguments:
++ *	nothing.
++ *
++ * Returns:
++ *	nothing.
++ *
++ * Notes:
++ *	Function to initialize and create global semaphores.
++ *
++ */
++
++
++void setup(){
++
++	done = sem_create("done", 0);
++	if (done == NULL){
++		panic("done: out of memory. \n");
++	}
++
++
++	all_done = sem_create("all_done", 0);
++	if (all_done == NULL){
++		panic("all_done: out of memory. \n");
++	}
++
++
++	mutex = sem_create("mutex", 1);
++	if (mutex == NULL){
++		panic("mutex: out of memory. \n");
++	}
++
++	
++	dish_mutex = sem_create("dish_mutex", 1);
++	if (dish_mutex == NULL){
++		panic("dish_mutex: out of memory. \n");
++	}
++
++
++	cats_queue = sem_create("cats_queue", 0);
++	if (cats_queue == NULL){
++		panic("cats_queue: out of memory. \n");
++	}
++
++
++	mice_queue = sem_create("mice_queue", 0);
++	if (mice_queue == NULL){
++		panic("mice_queue: out of memory. \n");
++	}
++}
++
++
++
+ /*
+  * catsem()
+  *
+@@ -63,8 +149,9 @@
+  *      nothing.
+  *
+  * Notes:
+- *      Write and comment this function using semaphores.
+- *
++ *      Thread function for cats. Prevents cats from entering the kitchen when
++ *	mice are in it. Allows cats to enter the kitchen and eat when its their
++ *	turn.
+  */
+ 
+ static
+@@ -78,6 +165,126 @@ catsem(void * unusedpointer,
+ 
+         (void) unusedpointer;
+         (void) catnumber;
++
++	// A cat eats 10 times
++
++	int index;
++	for(index = 0; index < 10; index++)
++	{
++	       /*
++	        * Local variables to determine if a cat is the first cat in the kitchen and if 
++		* there is another cat in the kitchen as well.
++		*/	
++	
++		bool first_cat_eat = false;
++		bool another_cat_eat = false;
++		int mydish;
++		
++		// If all dishes are available it lets the first cat in the kitchen
++		
++		P(mutex);
++		if(all_dishes_available == true){
++			all_dishes_available = false;
++			V(cats_queue);
++		}
++
++		cats_wait_count++;
++		V(mutex);
++
++
++		P(cats_queue);
++		if (no_cat_eat == true){
++			no_cat_eat = false;
++			first_cat_eat = true;
++			kprintf("%s is the first cat. \n", cat_names[catnumber]);
++		}
++		else {
++		first_cat_eat = false;
++		}
++
++		// If there is another cat in the queue the first cat will let the other cat in the kitchen.
++
++		if (first_cat_eat == true) {
++			P(mutex);
++			if (cats_wait_count > 1) {
++				another_cat_eat = true;
++				V(cats_queue);
++			}
++		
++			V(mutex);
++		}
++
++		kprintf("Cat %s in the kitchen. \n", cat_names[catnumber]);
++
++
++
++		// Assigns a dish to the cat based on availability.
++
++		P(dish_mutex);
++		if (dish1_busy == false) {
++			dish1_busy = true;
++			mydish = 1;
++		}
++		else {
++			assert(dish2_busy == false);
++			dish2_busy = true;
++			mydish = 2;
++		}
++		V(dish_mutex);
++
++		
++		// Cat starts and finishes eating.
++		
++
++		kprintf("Cat %s eating.\n", cat_names[catnumber]);
++		clocksleep(1);
++		kprintf("Cat %s finished eating.\n", cat_names[catnumber]);
++		
++		
++		// Cat relinquishes its dish	
++	
++	
++		P(dish_mutex);
++		if (mydish == 1) {
++			dish1_busy = false;
++		}
++		else {
++			dish2_busy = false;
++		}
++		V(dish_mutex);
++		
++		// Cat wait count gets decremented meaning cat is about to leave the kitchen
++	
++		P(mutex);
++		cats_wait_count--;
++		V(mutex);
++
++
++		/*
++		 * If both cats are in the kitchen then the non first cat always leaves first
++		 * and the first cat waits until it gets signaled to leave. This allows both cats
++		 * to essentially leave at the same time.
++		 * Change_turn is called after the first cat leaves.
++		 */ 
++		
++
++		if (first_cat_eat == true) {
++			if (another_cat_eat == true) {
++				P(done);
++			}
++		
++			kprintf("First cat %s is leaving. \n", cat_names[catnumber]);
++			no_cat_eat = true;
++			change_turn();
++		}
++		else {
++			kprintf("Non-first cat %s is leaving. \n", cat_names[catnumber]);
++			V(done);
++		}
++	}
++	
++	// This is to signal that this thread(cat) has completed all its iterations of eating.
++	V(all_done);
+ }
+         
+ 
+@@ -93,8 +300,8 @@ catsem(void * unusedpointer,
+  *      nothing.
+  *
+  * Notes:
+- *      Write and comment this function using semaphores.
+- *
++ *      Thread function for mice. Prevents mice from entering the kitchen when cats are in it.
++ *      Allows mice to enter the kitchen and eat when its their turn.
+  */
+ 
+ static
+@@ -108,6 +315,166 @@ mousesem(void * unusedpointer,
+ 
+         (void) unusedpointer;
+         (void) mousenumber;
++
++        // A mouse eats 10 times
++
++	int index;
++	for(index = 0; index < 10; index++) {
++
++
++	       /*
++                * Local variables to determine if a mouse is the first mouse in the kitchen and if
++                * there is another mouse in the kitchen as well.
++                */
++
++
++		bool first_mouse_eat = false;
++		bool another_mouse_eat = false;
++        	int mydish;
++
++		// If all dishes are available it lets the first mouse in the kitchen
++
++
++        	P(mutex);
++        	if(all_dishes_available == true){
++                	all_dishes_available = false;
++                	V(mice_queue);
++        	}
++
++        	mice_wait_count++;
++        	V(mutex);
++
++
++        	P(mice_queue);
++        	if (no_mouse_eat == true){
++                	no_mouse_eat = false;
++                	first_mouse_eat = true;
++			kprintf("%s is the first mouse. \n", mouse_names[mousenumber]);
++        	}
++		else {
++              		first_mouse_eat = false;
++        	}
++
++		
++		// If there is another mouse in the queue the first mouse will let the other mouse in the kitchen.
++
++
++		if (first_mouse_eat == true) {
++                	P(mutex);
++                	if (mice_wait_count > 1) {
++                        	another_mouse_eat = true;
++                        	V(mice_queue);
++			}
++                	V(mutex);
++        	}
++
++		kprintf("Mouse %s in the kitchen. \n", mouse_names[mousenumber]);
++
++
++		// Assigns a dish to the mouse based on availability.
++
++        	P(dish_mutex);
++        	if (dish1_busy == false) {
++                	dish1_busy = true;
++                	mydish = 1;
++        	}
++		else {
++              		assert(dish2_busy == false);
++                	dish2_busy = true;
++                	mydish = 2;
++        	}
++		V(dish_mutex);
++
++
++		// Mouse starts and finishes eating.
++
++
++        	kprintf("Mouse %s eating.\n", mouse_names[mousenumber]);
++        	clocksleep(1);
++        	kprintf("Mouse %s finished eating.\n", mouse_names[mousenumber]);
++
++
++		// Mouse relinqueshes its dish.
++
++
++        	P(dish_mutex);
++        	if (mydish == 1) {
++                	dish1_busy = false;
++        	}
++		else {
++              		dish2_busy = false;
++        	}
++		V(dish_mutex);
++
++
++                // Mouse wait count gets decremented meaning mouse is about to leave the kitchen.
++
++        	P(mutex);
++        	mice_wait_count--;
++        	V(mutex);
++
++
++		/*
++                 * If both mice are in the kitchen then the non first mouse always leaves first
++                 * and the first mouse waits until it gets signaled to leave. This allows both mice
++                 * to essentially leave at the same time.
++                 * Change_turn is called after the first mouse leaves.
++                 */
++
++
++        	if (first_mouse_eat == true) {
++                	if (another_mouse_eat == true) {
++				P(done);
++			}
++
++			kprintf("First mouse %s is leaving.\n", mouse_names[mousenumber]);
++			no_mouse_eat = true;
++			change_turn();
++		}
++		else {
++			kprintf("Non-first mouse %s is leaving.\n", mouse_names[mousenumber]);
++			V(done);
++		}
++	}
++
++	// This is to signal that this thread(mouse) has completed all its iterations of eating.
++	V(all_done);
++}
++
++
++
++/*
++ * change_turn()
++ *
++ * Arguments:
++ *	nothing.
++ *	
++ * Returns:
++ *	nothing.
++ *
++ * Notes:
++ *	Switches between cats and mice if they should be in the kitchen. Priority is given to mice
++ *	,if there are any waiting in the queue, to implement fairness as there are more cats than mice.
++ */
++
++
++void change_turn() {
++
++	P(mutex);
++
++	if (mice_wait_count > 0) {
++		V(mice_queue);			
++	}
++		
++	else if (cats_wait_count > 0) {
++		V(cats_queue);
++	}
++
++	else {
++		all_dishes_available = true;
++	}
++	
++	V(mutex);
+ }
+ 
+ 
+@@ -143,6 +510,8 @@ catmousesem(int nargs,
+          * Start NCATS catsem() threads.
+          */
+ 
++	setup();
++
+         for (index = 0; index < NCATS; index++) {
+            
+                 error = thread_fork("catsem Thread", 
+@@ -189,10 +558,48 @@ catmousesem(int nargs,
+                 }
+         }
+ 
++	// For loop to ensure that the whole process continues until all the animals finish their eating iterations.
++
++	for(index = 0; index < NCATS + NMICE; index++){
++		P(all_done);
++	}
++
++
++	// Destroys all the created semaphores.
++	cleanup();
++
+         return 0;
+ }
+ 
+ 
++
++/*
++ * cleanup()
++ *
++ * Arguments:
++ *	nothing.
++ *
++ * Returns:
++ *	nothing.
++ *
++ * Notes:
++ *	Function to destroy global semaphores.
++ *
++ */
++
++
++void cleanup(){
++	
++	sem_destroy(done);
++	sem_destroy(all_done);
++	sem_destroy(mutex);
++	sem_destroy(dish_mutex);
++	sem_destroy(cats_queue);
++	sem_destroy(mice_queue);
++
++}
++
++
+ /*
+  * End of catsem.c
+  */
+diff --git a/kern/compile/ASST1/catsem.o b/kern/compile/ASST1/catsem.o
+index e5aa82f..39b8af2 100644
+Binary files a/kern/compile/ASST1/catsem.o and b/kern/compile/ASST1/catsem.o differ
+diff --git a/kern/compile/ASST1/depend.mk b/kern/compile/ASST1/depend.mk
+index 3861979..ac05469 100644
+--- a/kern/compile/ASST1/depend.mk
++++ b/kern/compile/ASST1/depend.mk
+@@ -103,7 +103,8 @@ catlock.o: ../../asst1/catlock.c ../../include/types.h machine/types.h \
+   ../../include/test.h ../../include/thread.h machine/pcb.h
+ catsem.o: ../../asst1/catsem.c ../../include/types.h machine/types.h \
+   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
+-  ../../include/test.h ../../include/thread.h machine/pcb.h
++  ../../include/test.h ../../include/thread.h machine/pcb.h \
++  ../../include/synch.h
+ sfs_vnode.o: ../../fs/sfs/sfs_vnode.c ../../include/types.h \
+   machine/types.h ../../include/kern/types.h ../../include/lib.h \
+   machine/setjmp.h ../../include/synch.h ../../include/array.h \
+diff --git a/kern/compile/ASST1/kernel b/kern/compile/ASST1/kernel
+index 1adbbad..227411a 100755
+Binary files a/kern/compile/ASST1/kernel and b/kern/compile/ASST1/kernel differ
+diff --git a/kern/compile/ASST1/vers.c b/kern/compile/ASST1/vers.c
+index d36bdbb..9a9dbaf 100644
+--- a/kern/compile/ASST1/vers.c
++++ b/kern/compile/ASST1/vers.c
+@@ -1,3 +1,3 @@
+ /* This file is automatically generated. Edits will be lost.*/
+-const int buildversion = 7;
++const int buildversion = 36;
+ const char buildconfig[] = "ASST1";
+diff --git a/kern/compile/ASST1/vers.o b/kern/compile/ASST1/vers.o
+index 552ced4..c2f6d0e 100644
+Binary files a/kern/compile/ASST1/vers.o and b/kern/compile/ASST1/vers.o differ
+diff --git a/kern/compile/ASST1/version b/kern/compile/ASST1/version
+index 7f8f011..7facc89 100644
+--- a/kern/compile/ASST1/version
++++ b/kern/compile/ASST1/version
+@@ -1 +1 @@
+-7
++36

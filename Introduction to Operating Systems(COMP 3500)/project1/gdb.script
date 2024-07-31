@@ -1,0 +1,199 @@
+Script started on Tue 22 Aug 2023 07:24:06 PM EDT
+]777;notify;Command completed;exit]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[?1034h[sjakka@localhost ~]$ exitgdb ./simple[4P./simpleldd simple[3Pman lddgcc -g -lm -o simple simple.c
+]777;notify;Command completed;gcc -g -lm -o simple simple.c]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[sjakka@localhost ~]$ gcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kgdb ./simple[4P./simpleldd simple[3Pman ldd
+[?1049h[?1h=LDD(1)                                                                                    Linux Programmer's Manual                                                                                    LDD(1)[m
+[m
+[1mNAME[0m[m
+       ldd - print shared library dependencies[m
+[m
+[1mSYNOPSIS[0m[m
+       [1mldd[0m [OPTION]... FILE...[m
+[m
+[1mDESCRIPTION[0m[m
+       [1mldd[0m prints the shared libraries required by each program or shared library specified on the command line.[m
+[m
+   [1mSecurity[0m[m
+       In the usual case, [1mldd[0m invokes the standard dynamic linker (see [1mld.so[0m(8)) with the [1mLD_TRACE_LOADED_OBJECTS[0m environment variable set to 1, which causes the linker to display the library dependencies.[m
+       Be aware, however, that in some circumstances, some versions of [1mldd[0m may attempt to obtain the dependency information by directly executing the program.  Thus, you  should  [4mnever[24m  employ  [1mldd[0m  on  an[m
+       untrusted executable, since this may result in the execution of arbitrary code.  A safer alternative when dealing with untrusted executables is:[m
+[m
+           $ objdump -p /path/to/program | grep NEEDED[m
+[m
+[1mOPTIONS[0m[m
+       [1m--version[0m[m
+              Print the version number of [1mldd[0m.[m
+[m
+       [1m-v[0m [1m--verbose[0m[m
+              Print all information, including, for example, symbol versioning information.[m
+[m
+       [1m-u[0m [1m--unused[0m[m
+              Print unused direct dependencies.  (Since glibc 2.3.4.)[m
+[m
+       [1m-d[0m [1m--data-relocs[0m[m
+              Perform relocations and report any missing objects (ELF only).[m
+[m
+       [1m-r[0m [1m--function-relocs[0m[m
+              Perform relocations for both data objects and functions, and report any missing objects or functions (ELF only).[m
+[m
+       [1m--help[0m Usage information.[m
+[m
+[1mNOTES[0m[m
+       The  standard  version  of  [1mldd[0m comes with glibc2.  Libc5 came with an older version, still present on some systems.  The long options are not supported by the libc5 version.  On the other hand, the[m
+       glibc2 version does not support [1m-V[0m and only has the equivalent [1m--version[0m.[m
+[m
+       The libc5 version of this program will use the name of a library given on the command line as-is when it contains a '/'; otherwise it searches for the library in the standard locations.  To  run  it[m
+       on a shared library in the current directory, prefix the name with "./".[m
+[m
+[1mBUGS[0m[m
+       [1mldd[0m does not work on a.out shared libraries.[m
+[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[m
+[7m Manual page ldd(1) line 2 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K       [1mldd[0m does not work with some extremely old a.out programs which were built before [1mldd[0m support was added to the compiler releases.  If you use [1mldd[0m on one of these programs, the program will attempt to[m
+[7m Manual page ldd(1) line 5 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K       run with [4margc[24m = 0 and the results will be unpredictable.[m
+[7m Manual page ldd(1) line 6 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[m
+[7m Manual page ldd(1) line 7 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[1mSEE[0m [1mALSO[0m[m
+[7m Manual page ldd(1) line 8 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K       [1mld.so[0m(8), [1mldconfig[0m(8)[m
+[7m Manual page ldd(1) line 9 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[m
+[7m Manual page ldd(1) line 10 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[1mCOLOPHON[0m[m
+[7m Manual page ldd(1) line 11 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K       This page is part of release 3.53 of the Linux [4mman-pages[24m project.  A description of the project, and information about reporting bugs, can be found at http://www.kernel.org/doc/man-pages/.[m
+[7m Manual page ldd(1) line 12 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KBB[K[m
+[7m Manual page ldd(1) line 13 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM       [1mldd[0m prints the shared libraries required by each program or shared library specified on the command line.[m
+[46;1H[K[7m Manual page ldd(1) line 12 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[1mDESCRIPTION[0m[m
+[46;1H[K[7m Manual page ldd(1) line 11 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[m
+[46;1H[K[7m Manual page ldd(1) line 10 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM       [1mldd[0m [OPTION]... FILE...[m
+[46;1H[K[7m Manual page ldd(1) line 9 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[1mSYNOPSIS[0m[m
+[46;1H[K[7m Manual page ldd(1) line 8 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[m
+[46;1H[K[7m Manual page ldd(1) line 7 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM       ldd - print shared library dependencies[m
+[46;1H[K[7m Manual page ldd(1) line 6 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[1mNAME[0m[m
+[46;1H[K[7m Manual page ldd(1) line 5 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HM[m
+[46;1H[K[7m Manual page ldd(1) line 4 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[HMLDD(1)                                                                                    Linux Programmer's Manual                                                                                    LDD(1)[m
+[46;1H[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[KOO[KAA[K[K[7m Manual page ldd(1) line 1 (press h for help or q to quit)[27m[K[K[?1l>[?1049l]777;notify;Command completed;man ldd]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[sjakka@localhost ~]$ man lddgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kgdb ./simple[4P./simpleldd simple
+	linux-vdso.so.1 =>  (0x00007ffd86bcf000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f905705a000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f9056c8c000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f905735c000)
+]777;notify;Command completed;ldd simple]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[sjakka@localhost ~]$ ldd simple[3Pman lddgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cman ldd[Kldd simple[3Pman lddgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kgdb ./simple[4P./simpleldd simple[2P./simple
+Enter a number. 7
+Enter a number. 10
+Enter a number. 15
+Enter a number. 25
+Enter a number. 37
+Enter a number. 40
+Enter a number. 2
+Enter a number. 9
+Enter a number. 10
+Enter a number. 16
+3.866482]777;notify;Command completed;./simple]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[sjakka@localhost ~]$ ./simpleldd simple[3Pman lddgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kgdb ./simple[4P./simpleldd simple[2P./simplegdb ./simple[4P./simpleldd simple[3Pman ldd[K[K[K[K[K[K[K [Kgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[K./simplegcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit[Kclear[3Plsrmdir TestDirectorycd ..[Krm Test.txt ls[Kcd TestDirectoryls[Kcd ..p Test.txt ../d ..[K[3Plscd TestDirectoryls[Krm Test.txt [7Pcd ..rmdir TestDirectoryls[Kclear[1Pexitgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./simple[K[4Pexitgcc -g -lm -o simple simple.c[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kldd simple[2P./simplegdb ./simple
+[?1034hGNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-120.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Breakpoint 1 at 0x400615: file simple.c, line 9.
+Breakpoint 2 at 0x400510
+/home/sjakka/.gdbinit:4: Error in sourced command file:
+The program has no registers now.
+../../gdb/main.c:311: internal-error: exec_or_core_file_attach: Assertion `exec_bfd == NULL' failed.
+A problem internal to GDB has been detected,
+further debugging may prove unreliable.
+Quit this debugging session? (y or n) n
+../../gdb/main.c:311: internal-error: exec_or_core_file_attach: Assertion `exec_bfd == NULL' failed.
+A problem internal to GDB has been detected,
+further debugging may prove unreliable.
+Create a core file of GDB? (y or n) n
+(gdb) info b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000000000400615 in main at simple.c:9
+2       breakpoint     keep y   0x0000000000400510 <sqrt@plt>
+(gdb) r
+Starting program: /home/sjakka/simple 
+
+Breakpoint 1, main () at simple.c:9
+9	    for (i = 0; i < 10; i++) {
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-326.el7_9.x86_64
+(gdb) s
+10	        printf("Enter a number. ");
+(gdb) s[Kn
+11	        scanf("%d", &input[i]);
+(gdb) n
+Enter a number. 10
+9	    for (i = 0; i < 10; i++) {
+(gdb) p inpu[K[K[K[K[K[Kc
+Continuing.
+Enter a number. 4
+Enter a number. 6
+Enter a number. 35
+Enter a number. 97
+Enter a number. 86
+Enter a number. 73
+Enter a number. 52
+Enter a number. 32
+Enter a number. 43
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) n
+Single stepping until exit from function sqrt,
+which has no line number information.
+main () at simple.c:18
+18	        sum += sqrtNum;
+(gdb) n
+16	    for (i = 0; i < 10; i++){
+(gdb) n
+17	        sqrtNum = sqrt(input[i]);
+(gdb) n
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) s
+Single stepping until exit from function sqrt,
+which has no line number information.
+main () at simple.c:18
+18	        sum += sqrtNum;
+(gdb) p sqrtNum
+$1 = 2
+(gdb) n
+16	    for (i = 0; i < 10; i++){
+(gdb) p sum
+$2 = 5.16227766016838
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x00007ffff7aff690 in sqrt () from /lib64/libm.so.6
+(gdb) c
+Continuing.
+6.061972[Inferior 1 (process 7293) exited normally]
+(gdb) q
+]777;notify;Command completed;gdb ./simple]0;sjakka@localhost:~]7;file://localhost.localdomain/home/sjakka[sjakka@localhost ~]$ exit
+exit
+
+Script done on Tue 22 Aug 2023 07:28:57 PM EDT

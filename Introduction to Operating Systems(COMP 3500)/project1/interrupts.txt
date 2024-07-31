@@ -1,0 +1,65 @@
+            CPU0       
+   0:        127   IO-APIC-edge      timer
+   1:       3204   IO-APIC-edge      i8042
+   8:          1   IO-APIC-edge      rtc0
+   9:          0   IO-APIC-fasteoi   acpi
+  12:      37948   IO-APIC-edge      i8042
+  14:          0   IO-APIC-edge      ata_piix
+  15:       2615   IO-APIC-edge      ata_piix
+  16:      12685   IO-APIC-fasteoi   vmwgfx, snd_ens1371
+  17:     172504   IO-APIC-fasteoi   ehci_hcd:usb1, ioc0
+  18:        207   IO-APIC-fasteoi   uhci_hcd:usb2
+  19:       2800   IO-APIC-fasteoi   ens33
+  24:          0   PCI-MSI-edge      PCIe PME, pciehp
+  25:          0   PCI-MSI-edge      PCIe PME, pciehp
+  26:          0   PCI-MSI-edge      PCIe PME, pciehp
+  27:          0   PCI-MSI-edge      PCIe PME, pciehp
+  28:          0   PCI-MSI-edge      PCIe PME, pciehp
+  29:          0   PCI-MSI-edge      PCIe PME, pciehp
+  30:          0   PCI-MSI-edge      PCIe PME, pciehp
+  31:          0   PCI-MSI-edge      PCIe PME, pciehp
+  32:          0   PCI-MSI-edge      PCIe PME, pciehp
+  33:          0   PCI-MSI-edge      PCIe PME, pciehp
+  34:          0   PCI-MSI-edge      PCIe PME, pciehp
+  35:          0   PCI-MSI-edge      PCIe PME, pciehp
+  36:          0   PCI-MSI-edge      PCIe PME, pciehp
+  37:          0   PCI-MSI-edge      PCIe PME, pciehp
+  38:          0   PCI-MSI-edge      PCIe PME, pciehp
+  39:          0   PCI-MSI-edge      PCIe PME, pciehp
+  40:          0   PCI-MSI-edge      PCIe PME, pciehp
+  41:          0   PCI-MSI-edge      PCIe PME, pciehp
+  42:          0   PCI-MSI-edge      PCIe PME, pciehp
+  43:          0   PCI-MSI-edge      PCIe PME, pciehp
+  44:          0   PCI-MSI-edge      PCIe PME, pciehp
+  45:          0   PCI-MSI-edge      PCIe PME, pciehp
+  46:          0   PCI-MSI-edge      PCIe PME, pciehp
+  47:          0   PCI-MSI-edge      PCIe PME, pciehp
+  48:          0   PCI-MSI-edge      PCIe PME, pciehp
+  49:          0   PCI-MSI-edge      PCIe PME, pciehp
+  50:          0   PCI-MSI-edge      PCIe PME, pciehp
+  51:          0   PCI-MSI-edge      PCIe PME, pciehp
+  52:          0   PCI-MSI-edge      PCIe PME, pciehp
+  53:          0   PCI-MSI-edge      PCIe PME, pciehp
+  54:          0   PCI-MSI-edge      PCIe PME, pciehp
+  55:          0   PCI-MSI-edge      PCIe PME, pciehp
+  56:        485   PCI-MSI-edge      vmw_vmci
+  57:          0   PCI-MSI-edge      vmw_vmci
+ NMI:          0   Non-maskable interrupts
+ LOC:     337993   Local timer interrupts
+ SPU:          0   Spurious interrupts
+ PMI:          0   Performance monitoring interrupts
+ IWI:      20568   IRQ work interrupts
+ RTR:          0   APIC ICR read retries
+ RES:          0   Rescheduling interrupts
+ CAL:          0   Function call interrupts
+ TLB:          0   TLB shootdowns
+ TRM:          0   Thermal event interrupts
+ THR:          0   Threshold APIC interrupts
+ DFR:          0   Deferred Error APIC interrupts
+ MCE:          0   Machine check exceptions
+ MCP:         10   Machine check polls
+ ERR:          0
+ MIS:          0
+ PIN:          0   Posted-interrupt notification event
+ NPI:          0   Nested posted-interrupt event
+ PIW:          0   Posted-interrupt wakeup event

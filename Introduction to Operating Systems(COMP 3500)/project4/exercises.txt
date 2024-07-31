@@ -1,0 +1,12 @@
+1. To avoid starvation when using semaphores, you must implement the change_turn function correctly. The change_turn function when called should first check if there is any waiting
+   mice, and if there is it should signal a mouse to enter the kitchen. If there is no waiting mice, the change_turn function then checks to see if there is any waiting cats. If there is a
+   waiting cat then it signals the cat to enter the kitchen. If neither of these condititons are true then we set all_available_dishes to true which causes the cats and the mice to compete to enter
+   the kitchen. We give preference to mice to prevent starvation as there are more cats than mice which is why the change_turn function first checks if there are any waiting mice. 
+
+2. My experience implementing the Cats-and-Mice program went well for the most part. I first spent time gaining an in depth understanding of the algorithm by going through the project 4 slides of 
+   the semaphore implementation. I used the slides to help me implement the catsem() and the change_turn() functions. However to get the program to work there were many parts that you could implement
+   only after having a solid understanding of the algorithm. These parts include where exactly in catsem() and mousesem() do you call the change_turn function. This alone took me a very long time to
+   figure out. Furthermore, understanding there needs to be a semaphore to signify that an animal has completed all its iterations of eating are some of the few examples of why having a good understanding
+   of the algorithm is extremely important. The principles I can derive about the use of semaphore primitives is that they are essential to implement critical sections which prevents multiple threads
+   from accessing a variable at a time. In my case, I had global semaphores that protected many different variables such as all_dishes_available, cats_wait_count, mice_wait_count, dish1_busy, and dish2_busy.
+   I also had semaphores such as cats_queue and mice_queue that made sure that only one cat or one mouse was entering the kitchen at a time.

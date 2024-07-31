@@ -1,0 +1,21 @@
+PROJECT REPORT
+
+Task 1: Setting up Linux programming environment
+
+- This task went pretty smoothly for me, I just followed the instructions that were provided.
+
+Task 2: Using Linux Commands
+
+- This task was a bit trickier because there were some commands I never used before such as chmod command.
+
+Task 3: Getting to know your system
+
+- This task was pretty straightforward, I was able to get the output of the commands to pipe into the appropriate files on the first try.
+
+Task 4: Using gcc and gdb
+
+- This task was pretty fun because I never debugged in the terminal before. I always debugged using an IDE. Also, it took me a couple of tries for me to properly figure out how to use gdb but the geeksforgeeks tutorial helped a lot.
+
+Task 5: Using git
+
+- This task allowed me to really understand git from the ground-up. I used git before, but there were a lot of things I did not understand and this task allowed me to clarify those things. The project instructions and the documentation on the git site helped a lot. 
