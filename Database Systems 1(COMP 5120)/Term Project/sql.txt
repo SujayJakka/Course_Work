@@ -1,0 +1,319 @@
+1.
+SELECT SJ.CategoryName
+FROM db_supplier S, db_book B, db_subject SJ
+WHERE S.SupplierID = B.SupplierID
+  AND B.SubjectID = SJ.SubjectID
+  AND S.CompanyName = 'supplier2';
+
+Output:
+
+CategoryName
+category1
+category2
+
+
+2.
+SELECT B.Title, B.UnitPrice
+FROM db_book B, db_supplier S
+WHERE B.SupplierID = S.SupplierID
+  AND S.CompanyName = 'supplier3'
+  AND B.UnitPrice = (
+      SELECT MAX(B2.UnitPrice)
+      FROM db_book B2, db_supplier S2
+      WHERE B2.SupplierID = S2.SupplierID
+        AND S2.CompanyName = 'supplier3'
+  );
+
+Output:
+
+Title	UnitPrice
+book7	56.90
+
+
+
+3.
+SELECT DISTINCT B.Title
+FROM db_customer C, db_order O, db_order_detail OD, db_book B
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+  AND C.FirstName = 'firstname1'
+  AND C.LastName = 'lastname1';
+
+Output:
+
+Title
+book1
+book4
+book6
+book7
+
+
+
+4.
+SELECT B.Title
+FROM db_book B
+WHERE B.quantity > 10;
+
+Output:
+
+Title
+book4
+book6
+book7
+
+5.
+SELECT SUM(B.UnitPrice * OD.Quantity) AS TotalPaid
+FROM db_customer C, db_order O, db_order_detail OD, db_book B
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+  AND C.FirstName = 'firstname1'
+  AND C.LastName = 'lastname1';
+
+Output:
+
+TotalPaid
+266.96
+
+
+6.
+SELECT C.FirstName, C.LastName
+FROM db_customer C, db_order O, db_order_detail OD, db_book B
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+GROUP BY C.CustomerID
+HAVING SUM(B.UnitPrice * OD.Quantity) < 80;
+
+Output:
+
+FirstName	LastName
+firstname2	lastname2
+firstname3	lastname3
+
+
+7.
+SELECT B.Title
+FROM db_book B, db_supplier S
+WHERE B.SupplierID = S.SupplierID
+  AND S.CompanyName = 'supplier2';
+
+Output:
+
+Title
+book3
+book5
+
+8.
+SELECT C.FirstName, C.LastName, SUM(B.UnitPrice * OD.Quantity) AS TotalPaid
+FROM db_customer C, db_order O, db_order_detail OD, db_book B
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+GROUP BY C.CustomerID
+ORDER BY TotalPaid DESC;
+
+Output:
+
+FirstName	LastName	TotalPaid
+firstname4	lastname4	296.38
+firstname1	lastname1	266.96
+firstname2	lastname2	78.90
+firstname3	lastname3	12.34
+
+
+9.
+SELECT B.Title, S.ShpperName
+FROM db_book B, db_order_detail OD, db_order O, db_shipper S
+WHERE B.BookID = OD.BookID
+  AND OD.OrderID = O.OrderID
+  AND O.ShipperID = S.ShipperID
+  AND O.ShippedDate = '2016-08-04';
+
+Output:
+
+Title	ShpperName
+book3	shipper1
+book4	shipper1
+book7	shipper1
+book1	shipper1
+book5	shipper2
+
+
+10. 
+SELECT DISTINCT B.Title
+FROM db_book B, db_order_detail OD, db_order O, db_customer C
+WHERE B.BookID = OD.BookID
+  AND OD.OrderID = O.OrderID
+  AND O.CustomerID = C.CustomerID
+  AND C.FirstName = 'firstname1'
+  AND C.LastName = 'lastname1'
+  AND B.Title IN (
+      SELECT B2.Title
+      FROM db_book B2, db_order_detail OD2, db_order O2, db_customer C2
+      WHERE B2.BookID = OD2.BookID
+        AND OD2.OrderID = O2.OrderID
+        AND O2.CustomerID = C2.CustomerID
+        AND C2.FirstName = 'firstname4'
+        AND C2.LastName = 'lastname4'
+  );
+
+Output:
+
+Title
+book1
+book4
+book7
+
+
+11. 
+SELECT DISTINCT B.Title
+FROM db_employee E, db_order O, db_order_detail OD, db_book B
+WHERE E.EmployeeID = O.EmployeeID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+  AND E.FirstName = 'firstname6'
+  AND E.LastName = 'lastname6';
+
+Output:
+
+Title
+book6
+book7
+book3
+book4
+book1
+
+12. 
+SELECT B.Title, SUM(OD.Quantity) AS TotalQuantity
+FROM db_book B, db_order_detail OD
+WHERE B.BookID = OD.BookID
+GROUP BY B.BookID
+ORDER BY TotalQuantity ASC;
+
+Output:
+
+Title	TotalQuantity
+book5	1
+book6	2
+book4	2
+book3	2
+book7	4
+book1	6
+
+13.
+SELECT C.FirstName, C.LastName
+FROM db_customer C, db_order O, db_order_detail OD
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+GROUP BY C.CustomerID
+HAVING SUM(OD.Quantity) >= 2;
+
+Output:
+
+FirstName	LastName
+firstname1	lastname1
+firstname4	lastname4
+
+
+14.
+SELECT DISTINCT C.FirstName, C.LastName, B.Title
+FROM db_customer C, db_order O, db_order_detail OD, db_book B, db_subject SJ
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+  AND B.SubjectID = SJ.SubjectID
+  AND (SJ.CategoryName = 'category3' OR SJ.CategoryName = 'category4');
+
+Output:
+
+FirstName	LastName	Title
+firstname1	lastname1	book6
+firstname1	lastname1	book7
+firstname4	lastname4	book7
+
+15.
+SELECT DISTINCT C.FirstName, C.LastName
+FROM db_customer C, db_order O, db_order_detail OD, db_book B
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+  AND B.Author = 'author1';
+
+Output:
+
+FirstName	LastName
+firstname1	lastname1
+firstname3	lastname3
+firstname4	lastname4
+
+
+16.
+SELECT E.FirstName, E.LastName, SUM(OD.Quantity * B.UnitPrice) AS TotalSales
+FROM db_employee E, db_order O, db_order_detail OD, db_book B
+WHERE E.EmployeeID = O.EmployeeID
+  AND O.OrderID = OD.OrderID
+  AND OD.BookID = B.BookID
+GROUP BY E.EmployeeID;
+
+Output:
+
+FirstName	LastName	TotalSales
+firstname5	lastname5	162.82
+firstname6	lastname6	491.76
+
+17.
+SELECT B.Title, SUM(OD.Quantity) AS TotalQuantity
+FROM db_book B, db_order O, db_order_detail OD
+WHERE B.BookID = OD.BookID
+  AND O.OrderID = OD.OrderID
+  AND O.OrderID NOT IN (
+      SELECT O2.OrderID
+      FROM db_order O2
+      WHERE O2.ShippedDate < '08/04/2016'
+  )
+GROUP BY B.BookID;
+
+Output:
+
+Title	TotalQuantity
+book1	6
+book3	2
+book4	2
+book5	1
+book6	2
+book7	4
+
+18.
+SELECT C.FirstName, C.LastName, SUM(OD.Quantity) AS TotalQuantity
+FROM db_customer C, db_order O, db_order_detail OD
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+GROUP BY C.CustomerID
+HAVING SUM(OD.Quantity) > 1
+ORDER BY TotalQuantity DESC;
+
+Output:
+
+FirstName	LastName	TotalQuantity
+firstname1	lastname1	9
+firstname4	lastname4	6
+
+
+19.
+SELECT C.FirstName, C.LastName, C.Phone
+FROM db_customer C, db_order O, db_order_detail OD
+WHERE C.CustomerID = O.CustomerID
+  AND O.OrderID = OD.OrderID
+GROUP BY C.CustomerID
+HAVING SUM(OD.Quantity) > 3;
+
+Output:
+
+FirstName	LastName	Phone
+firstname1	lastname1	334-001-001
+firstname4	lastname4	334-004-004
+
+
+
