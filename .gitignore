@@ -1,1 +1,40 @@
+# Python bytecode and cache
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+
+# IDE settings
+**/.idea/
+**/.vscode/
+
+# Virtual environments
+**/venv/
+**/.venv/
+**/ENV/
+**/env/
+**/*.pyvenv.cfg
+
+# Environment variables and secrets
 **/.env
+**/*.env
+
+# OS junk files
+**/.DS_Store
+**/Thumbs.db
+
+# Jupyter Notebook checkpoints
+**/.ipynb_checkpoints/
+
+# Testing & coverage
+**/coverage.*
+**/.tox/
+**/.nox/
+**/.pytest_cache/
+**/htmlcov/
+
+# Packaging & build
+**/build/
+**/dist/
+**/*.egg-info/
+**/.eggs/
